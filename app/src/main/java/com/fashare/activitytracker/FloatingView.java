@@ -29,7 +29,7 @@ public class FloatingView extends LinearLayout {
     public FloatingView(Context context) {
         super(context);
         mContext = context;
-        mWindowManager = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
+        mWindowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         initView();
     }
 
@@ -43,10 +43,7 @@ public class FloatingView extends LinearLayout {
             @Override
             public void onClick(View v) {
                 Toast.makeText(mContext, "关闭悬浮框", Toast.LENGTH_SHORT).show();
-                mContext.startService(
-                        new Intent(mContext, TrackerService.class)
-                                .putExtra(TrackerService.COMMAND, TrackerService.COMMAND_CLOSE)
-                );
+                mContext.startService(new Intent(mContext, TrackerService.class).putExtra(TrackerService.COMMAND, TrackerService.COMMAND_CLOSE));
             }
         });
     }
@@ -63,32 +60,26 @@ public class FloatingView extends LinearLayout {
         EventBus.getDefault().unregister(this);
     }
 
-    public void onEventMainThread(TrackerService.ActivityChangedEvent event){
+    public void onEventMainThread(TrackerService.ActivityChangedEvent event) {
         Log.d(TAG, "event:" + event.getPackageName() + ": " + event.getClassName());
-        String packageName = event.getPackageName(),
-                className = event.getClassName();
+        String packageName = event.getPackageName(), className = event.getClassName();
 
         mTvPackageName.setText(packageName);
-        mTvClassName.setText(
-                className.startsWith(packageName)?
-                className.substring(packageName.length()):
-                className
-        );
+        mTvClassName.setText(className.startsWith(packageName) ? className.substring(packageName.length()) : className);
     }
 
     Point preP, curP;
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()){
+        switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                preP = new Point((int)event.getRawX(), (int)event.getRawY());
+                preP = new Point((int) event.getRawX(), (int) event.getRawY());
                 break;
 
             case MotionEvent.ACTION_MOVE:
-                curP = new Point((int)event.getRawX(), (int)event.getRawY());
-                int dx = curP.x - preP.x,
-                        dy = curP.y - preP.y;
+                curP = new Point((int) event.getRawX(), (int) event.getRawY());
+                int dx = curP.x - preP.x, dy = curP.y - preP.y;
 
                 WindowManager.LayoutParams layoutParams = (WindowManager.LayoutParams) this.getLayoutParams();
                 layoutParams.x += dx;

@@ -54,10 +54,7 @@ public class TrackerService extends AccessibilityService {
             CharSequence packageName = event.getPackageName();
             CharSequence className = event.getClassName();
             if (!TextUtils.isEmpty(packageName) && !TextUtils.isEmpty(className)) {
-                EventBus.getDefault().post(new ActivityChangedEvent(
-                        event.getPackageName().toString(),
-                        event.getClassName().toString()
-                ));
+                EventBus.getDefault().post(new ActivityChangedEvent(event.getPackageName().toString(), event.getClassName().toString()));
             }
         }
     }

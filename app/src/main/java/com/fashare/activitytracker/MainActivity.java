@@ -23,11 +23,8 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(AccessibilityUtil.checkAccessibility(MainActivity.this)) {
-                    startService(
-                            new Intent(MainActivity.this, TrackerService.class)
-                                    .putExtra(TrackerService.COMMAND, TrackerService.COMMAND_OPEN)
-                    );
+                if (AccessibilityUtil.checkAccessibility(MainActivity.this)) {
+                    startService(new Intent(MainActivity.this, TrackerService.class).putExtra(TrackerService.COMMAND, TrackerService.COMMAND_OPEN));
                     finish();
                 }
             }
@@ -37,10 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private void checkOverlayPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!Settings.canDrawOverlays(this)) {
-                startActivityForResult(
-                        new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName())),
-                        REQUEST_CODE
-                );
+                startActivityForResult(new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName())), REQUEST_CODE);
                 Toast.makeText(this, "请先授予 \"Activity 栈\" 悬浮窗权限", Toast.LENGTH_LONG).show();
             }
         }
